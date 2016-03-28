@@ -1,0 +1,10 @@
+<div id="container">
+	<h1>Welcome to 汉服北京会员部管理系统 beta!</h1>
+
+	<div id="body">
+		<p>由于某些原因，出现了错误:</p>
+		<code>请登录</code>
+	</div>
+
+	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
+</div>
