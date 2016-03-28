@@ -1,0 +1,49 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class bulletin extends CI_Controller {
+	
+  public function __construct()
+  {
+    parent::__construct();
+    $this->load->model('mem');
+  } 
+	//show one on javascript
+  public function view_js($slug = FALSE)
+  {
+		if($slug == FALSE )
+		{
+			return;
+    }
+    $data['news_item'] = $this->mem->get_news($slug);
+
+	  if (empty($data['news_item']))
+	  {
+			$this->load->view('login'); 
+			return;
+	  }
+		if($slug != FALSE )
+		{
+    	$data['fee_item'] = $this->mem->get_fees($data['news_item']['unique_name']);
+    	$data['activity'] = $this->mem->get_activity($data['news_item']['unique_name']);
+    }
+		$this->load->view('bulletin_js' , $data);
+  }
+  //version
+	public function version() 
+	{  
+		echo "13";
+	}
+	//show all index number for matrix code
+	public function index() 
+	{  
+		$this->load->view('header');  
+    //$this->mem->set_news();
+    $data['news'] = $this->mem->get_bulletin(); 
+    $data['name'] = $this->mem->get_news();
+		$this->load->view('bulletin',$data); 
+		$this->load->view('footer'); 
+	}
+}
+
+/* End of file welcome.php */
+/* Location: ./application/controllers/welcome.php */
