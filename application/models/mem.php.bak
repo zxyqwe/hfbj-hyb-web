@@ -1,0 +1,94 @@
+<?php
+class Mem extends CI_Model {
+
+  public function __construct()
+  {
+    $this->load->database();
+  }
+  
+  public function get_user($user,$mm)
+  {	  
+	  $query = $this->db->get_where('user', array('name' => $user , 'mm' => $mm))->result_array();
+	  return !empty($query);
+	}
+  
+  public function get_fees($slug = FALSE)
+  {
+	  if ($slug === FALSE)
+	  {
+	    return array();
+	  }
+	  
+	  $query = $this->db->get_where('fee', array('unique_name' => $slug));
+	  return $query->result_array();
+	}
+  
+  public function get_news($slug = FALSE)
+  {
+	  if ($slug === FALSE)
+	  {
+	    $query = $this->db->get('member');
+	    return $query->result_array();
+	  }
+	  
+	  $query = $this->db->get_where('member', array('id' => $slug));
+	  return $query->row_array();
+	}
+  
+  public function set_news()
+	{
+	  $this->load->helper('url');
+	  
+		$this->load->database();
+		$s = explode("\n",$this->input->post('text')) ;
+		foreach ($s as $ss)
+		{
+			$str = explode(",",$ss) ;
+			$data = array(
+	               'tieba_id' => $str[0],
+	               'gender' => $str[1],
+	               'phone' => $str[2],
+	               'QQ' => $str[3],
+	               'mail' => $str[4],
+	               'pref' => $str[5],
+	               'web_name' => $str[6],
+	               'unique_name' => $str[7],
+	               'master' => $str[8]
+	               ); 
+		  
+		  $this->db->insert('member', $data);
+		  $this->db->cache_delete_all();
+		}
+	}
+  
+  public function set_fees()
+	{
+		$out = "";
+	  $this->load->helper('url');
+	  
+		$this->load->database();
+		$s = explode(",",$this->input->post('text')) ;
+		foreach ($s as $str)
+		{
+			$query = $this->db->get_where('member', array('unique_name' => $str))->row_array();
+	  	if(empty($query))
+	  	{
+	  		$out=$out."Invalid name: ".$str."<br />";
+	  		continue;
+	  	}
+	  		
+	  	$year = $this->db->query('SELECT max(year_time) as M FROM fee WHERE unique_name = ?',array($str))->row()->M + 1;
+	  	$year = max($year,2013);
+			$data = array(
+	               'unique_name' => $str,		
+	               'fee_time' => date("Y-F-d H:i:s",time()),
+	               'year_time' => $year
+	               ); 
+		  
+		  $this->db->insert('fee', $data);
+	  	$out=$out."Name: <a href='/hyb/index.php/welcome/view/".$query['id']."'>".$str."</a> Year: ".$year."<br />";
+		}
+		$this->db->cache_delete_all();
+		return $out;
+	}
+}
