@@ -123,7 +123,7 @@ class Mem extends CI_Model {
   {
 	  if ($slug === FALSE)
 	  {
-	    $query = $this->db->order_by('unique_name')->get('member');
+	    $query = $this->db->order_by('unique_name')->get_where('member', array('code' => 0));
 	    return $query->result_array();
 	  }
 	  
