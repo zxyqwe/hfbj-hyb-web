@@ -1,0 +1,25 @@
+<style type="text/css">  
+.comments {  
+ width:100%;
+ overflow:auto;  
+ word-break:break-all;  
+}  
+</style> 
+<div id="container">
+	<h1>创建条目</h1>
+
+	<div id="body">
+		<?php echo validation_errors(); ?>
+		
+		<?php echo form_open('welcome/insert') ?>
+		
+		  <label for="text">内容</label><br />
+		  <code><textarea name="text" class="comments" style="height:expression((this.scrollHeight>150)?'150px':(this.scrollHeight+5)+'px');overflow:auto;"></textarea><br /></code>
+		  
+		  <input type="submit" name="submit" value="创建" /> 
+		
+		</form>
+	</div>
+
+	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
+</div>

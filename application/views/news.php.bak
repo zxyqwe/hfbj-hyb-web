@@ -1,0 +1,45 @@
+<div id="container">
+<div id="body">
+<p>Detail:</p>
+<code>
+<?php foreach ($news as $news_item): ?>
+<li><a onmouseover="javascript:s(<?php echo $news_item['id'] ?>);">贴吧id：&emsp;<?php echo $news_item['tieba_id']; ?></a>&emsp; &emsp;
+<a href="/hyb/welcome/view/<?php echo $news_item['id'] ?>">编号：&emsp;<?php echo $news_item['unique_name'] ?></a><br /></li>
+<?php endforeach ?>
+</code>
+</div>
+<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
+</div>
+<div id="myDiv"></div>
+<script type="text/javascript">
+function s(i){
+	loadXMLDoc(i);
+	var b = Math.max(document.body.scrollTop , document.documentElement.scrollTop);
+	document.getElementById("myDiv").style.top = b+100+"px"; 
+}
+function xxx(xmlhttp,i)
+{
+	xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+  		document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+  xmlhttp.open("GET","/hyb/index.php/welcome/view_js/"+i,true);
+  xmlhttp.send();
+}
+function loadXMLDoc(i)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  	xmlhttp=new XMLHttpRequest();
+  }
+	else
+  {// code for IE6, IE5
+  	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xxx(xmlhttp,i);
+}
+</script>
